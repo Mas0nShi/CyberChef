@@ -32,6 +32,12 @@ module.exports = function (grunt) {
             "copy:standalone", "zip:standalone", "clean:standalone", "exec:calcDownloadHash", "chmod"
         ]);
 
+    grunt.registerTask("utools",
+        "Creates a production-ready build. Use the --msg flag to add a compile message.",
+        [
+            "eslint", "clean:prod", "clean:config", "exec:generateConfig", "findModules", "webpack:web",
+            "copy:utools", "copy:plugin", "zip:standalone", "clean:standalone", "exec:calcDownloadHash", "chmod"
+        ]);
     grunt.registerTask("node",
         "Compiles CyberChef into a single NodeJS module.",
         [
@@ -191,7 +197,7 @@ module.exports = function (grunt) {
         eslint: {
             configs: ["*.{js,mjs}"],
             core: ["src/core/**/*.{js,mjs}", "!src/core/vendor/**/*", "!src/core/operations/legacy/**/*"],
-            web: ["src/web/**/*.{js,mjs}", "!src/web/static/**/*"],
+            web: ["src/web/**/*.{js,mjs}", "!src/web/static/**/*", "!src/web/thirdparty/**/*"],
             node: ["src/node/**/*.{js,mjs}"],
             tests: ["tests/**/*.{js,mjs}"],
         },
@@ -238,10 +244,9 @@ module.exports = function (grunt) {
                 cwd: "build/prod/",
                 src: [
                     "build/prod/**/*",
-                    "!build/prod/index.html",
                     "!build/prod/BundleAnalyzerReport.html",
                 ],
-                dest: `build/prod/CyberChef_v${pkg.version}.zip`
+                dest: `build/prod/out/CyberChef_v${pkg.version}.zip`
             }
         },
         connect: {
@@ -301,7 +306,38 @@ module.exports = function (grunt) {
                         dest: `build/prod/CyberChef_v${pkg.version}.html`
                     }
                 ]
+            },
+            utools: {
+                options: {
+                    process: function (content, srcpath) {
+                        if (srcpath.indexOf("index.html") >= 0) {
+                            // Replace download link with version number
+                            content = content.replace(/<a [^>]+>Download CyberChef.+?<\/a>/,
+                                `<span>Version ${pkg.version}</span>`);
+
+                            return grunt.template.process(content, srcpath);
+                        } else {
+                            return content;
+                        }
+                    },
+                    noProcess: ["**", "!**/*.html"]
+                },
+                files: [
+                    {
+                        src: ["build/prod/index.html"],
+                        dest: `build/prod/index.html`
+                    }
+                ]
+            },
+            plugin: {
+                files: [
+                    {
+                        src: ["src/web/static/utools/plugin.json"],
+                        dest: "build/prod/plugin.json"
+                    }
+                ]
             }
+
         },
         chmod: {
             build: {
@@ -329,12 +365,12 @@ module.exports = function (grunt) {
                     switch (process.platform) {
                         case "darwin":
                             return chainCommands([
-                                `shasum -a 256 build/prod/CyberChef_v${pkg.version}.zip | awk '{print $1;}' > build/prod/sha256digest.txt`,
+                                `shasum -a 256 build/prod/out/CyberChef_v${pkg.version}.zip | awk '{print $1;}' > build/prod/sha256digest.txt`,
                                 `sed -i '' -e "s/DOWNLOAD_HASH_PLACEHOLDER/$(cat build/prod/sha256digest.txt)/" build/prod/index.html`
                             ]);
                         default:
                             return chainCommands([
-                                `sha256sum build/prod/CyberChef_v${pkg.version}.zip | awk '{print $1;}' > build/prod/sha256digest.txt`,
+                                `sha256sum build/prod/out/CyberChef_v${pkg.version}.zip | awk '{print $1;}' > build/prod/sha256digest.txt`,
                                 `sed -i -e "s/DOWNLOAD_HASH_PLACEHOLDER/$(cat build/prod/sha256digest.txt)/" build/prod/index.html`
                             ]);
                     }

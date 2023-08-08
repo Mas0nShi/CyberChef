@@ -1,0 +1,34 @@
+{
+    "main": "index.html",
+    "logo": "images/cook_male-32x32.png",
+    "platform": ["win32", "darwin", "linux"],
+
+    "pluginSetting": {
+		"single": true,
+        "height": 600
+	},
+    
+    "features": [
+    {
+        "code": "Cyber",
+        "explain": "a web app for encryption, encoding, compression and data analysis.",
+        "platform": ["win32", "darwin", "linux"],
+        "cmds": [
+            "Cyber",
+            "encode",
+            "decode",
+            "encrypt",
+            "decrypt",
+            "加密",
+            "解密",
+            "编码",
+            { 
+			    "type": "over",
+                "label": "Cyber Search",
+                "minLength": 3,
+                "maxLength": 20
+            }
+        ]
+    }
+]
+}

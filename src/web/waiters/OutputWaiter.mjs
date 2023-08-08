@@ -775,13 +775,13 @@ class OutputWaiter {
         if (types.length) {
             ext = `.${types[0].extension.split(",", 1)[0]}`;
         }
+        
+        // TODO: Not Implemented in Electron etc.
+        const utools = window.utools;
+        const fileName = `download${ext}`;
+        const path = utools.getPath("downloads") + ((utools.isWindows() ? "\\" : "/")) + fileName;
 
-        const fileName = window.prompt("Please enter a filename: ", `download${ext}`);
-
-        // Assume if the user clicks cancel they don't want to download
-        if (fileName === null) return;
-
-        const file = new File([data], fileName);
+        const file = new File([data], path);
         FileSaver.saveAs(file, fileName, {autoBom: false});
     }
 

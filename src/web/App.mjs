@@ -9,7 +9,7 @@ import {fromBase64} from "../core/lib/Base64.mjs";
 import Manager from "./Manager.mjs";
 import HTMLCategory from "./HTMLCategory.mjs";
 import HTMLOperation from "./HTMLOperation.mjs";
-import Split from "split.js";
+import Split from "./thirdparty/splitjs/src/split.js";
 import moment from "moment-timezone";
 import cptable from "codepage";
 

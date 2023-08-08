@@ -46,14 +46,9 @@ jobs:
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: build/prod/*.zip
+        file: build/prod/out/*.zip
         tag: ${{ github.ref }}
         overwrite: true
         file_glob: true
         body: "See the [CHANGELOG](https://github.com/gchq/CyberChef/blob/master/CHANGELOG.md) and [commit messages](https://github.com/gchq/CyberChef/commits/master) for details."
 
-    - name: Publish to NPM
-      if: success()
-      uses: JS-DevTools/npm-publish@v1
-      with:
-        token: ${{ secrets.NPM_TOKEN }}

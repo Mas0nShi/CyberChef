@@ -147,7 +147,7 @@
         <div id="content-wrapper">
             <div id="banner" class="row">
                 <div class="col" style="text-align: left; padding-left: 10px;">
-                    <a href="#" data-toggle="modal" data-target="#download-modal" data-help-title="Downloading CyberChef" data-help="<p>CyberChef can be downloaded to run locally or hosted within your own network. It has no server-side component so all that is required is that the ZIP file is uncompressed and the files are accessible.</p><p>As a user, it is worth noting that unofficial versions of CyberChef could have been modified to introduce Input and/or Recipe exfiltration. We recommend always using the official, open source, up-to-date version of CyberChef hosted at <a href='https://gchq.github.io/CyberChef'>https://gchq.github.io/CyberChef</a> if accessible.</p><p>The Network tab in your browser's Developer console (F12) can be used to inspect the network requests made by a website. This can confirm that no data is uploaded when a CyberChef recipe is baked.</p>">Download CyberChef <i class="material-icons">file_download</i></a>
+                    <a data-toggle="modal" data-target="#download-modal" data-help-title="CyberChef" data-help="">CyberChef &times; Utools</a>
                 </div>
                 <div class="col-md-6" id="notice-wrapper">
                     <span id="notice">
@@ -565,6 +565,7 @@
                             Compile time: <%= htmlWebpackPlugin.options.compileTime %>
                         </p>
                         <p>&copy; Crown Copyright 2016.</p>
+                        <p>💀 CyberChef &times; Utools ❤️ Redeploy by Mas0n</p>
                         <p>Released under the Apache Licence, Version 2.0.</p>
                         <p><a href="https://gitter.im/gchq/CyberChef">
                             <img src="<%- require('../static/images/gitter-badge.svg') %>">
@@ -836,42 +837,6 @@
             </div>
         </div>
 
-        <div class="modal fade" id="download-modal" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content" data-help-proxy="a[data-target='#download-modal']">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Download CyberChef</h5>
-                    </div>
-                    <div class="modal-body">
-                        <p>
-                            CyberChef runs entirely within your browser with no server-side component, meaning that your Input data and Recipe configuration are not sent anywhere, whether you use the live, official version of CyberChef or a downloaded, standalone version (assuming it is unmodified).
-                        </p>
-                        <p>
-                            There are three operations that make calls to external services, those being the 'Show on map' operation which downloads map tiles from wikimedia.org, the 'DNS over HTTPS' operation which resolves DNS requests using either Google or Cloudflare services, and the 'HTTP request' operation that calls out to the configured URL you enter. You can confirm what network requests are made using your browser's developer console (F12) and viewing the Network tab.
-                        </p>
-                        <p>
-                            If you would like to download your own standalone copy of CyberChef to run in a segregated network or where there is limited or no Internet connectivity, you can get a ZIP file containing the whole web app below. This can be run locally or hosted on a web server with no configuration required.
-                        </p>
-                        <p>
-                            Be aware that the standalone version will never update itself, meaning it will not receive bug fixes or new features until you re-download newer versions manually.
-                        </p>
-
-                        <h6>CyberChef v<%= htmlWebpackPlugin.options.version %></h6>
-                        <ul>
-                            <li>Build time: <%= htmlWebpackPlugin.options.compileTime %></li>
-                            <li>The changelog for this version can be viewed <a href="https://github.com/gchq/CyberChef/blob/master/CHANGELOG.md">here</a></li>
-                            <li>&copy; Crown Copyright 2016</li>
-                            <li>Released under the Apache Licence, Version 2.0</li>
-                            <li>SHA256 hash: DOWNLOAD_HASH_PLACEHOLDER</li>
-                        </ul>
-                        <a href="CyberChef_v<%= htmlWebpackPlugin.options.version %>.zip" download class="btn btn-outline-primary">Download ZIP file</a>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <!-- The Help modal should be last to ensure it has the highest z-index -->
         <div class="modal fade" id="help-modal" tabindex="-1" role="dialog">

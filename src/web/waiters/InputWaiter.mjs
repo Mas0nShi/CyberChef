@@ -1011,7 +1011,7 @@ class InputWaiter {
 
     /**
      * Handler for open input button events
-     * Loads the opened data into the input textarea
+     * Loads the opened data into the input textare
      *
      * @param {event} e
      */

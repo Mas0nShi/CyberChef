@@ -8,12 +8,6 @@
 
 import Operation from "../Operation.mjs";
 import OperationError from "../errors/OperationError.mjs";
-import { isImage } from "../lib/FileType.mjs";
-import { toBase64 } from "../lib/Base64.mjs";
-import { isWorkerEnvironment } from "../Utils.mjs";
-
-import process from "process";
-import { createWorker } from "tesseract.js";
 
 /**
  * Optical Character Recognition operation
@@ -47,46 +41,8 @@ class OpticalCharacterRecognition extends Operation {
      * @returns {string}
      */
     async run(input, args) {
-        const [showConfidence] = args;
-
-        if (!isWorkerEnvironment()) throw new OperationError("This operation only works in a browser");
-
-        const type = isImage(input);
-        if (!type) {
-            throw new OperationError("Unsupported file type (supported: jpg,png,pbm,bmp) or no file provided");
-        }
-
-        const assetDir = isWorkerEnvironment() ? `${self.docURL}/assets/` : `${process.cwd()}/src/core/vendor/`;
-
-        try {
-            self.sendStatusMessage("Spinning up Tesseract worker...");
-            const image = `data:${type};base64,${toBase64(input)}`;
-            const worker = createWorker({
-                workerPath: `${assetDir}tesseract/worker.min.js`,
-                langPath: `${assetDir}tesseract/lang-data`,
-                corePath: `${assetDir}tesseract/tesseract-core.wasm.js`,
-                logger: progress => {
-                    if (isWorkerEnvironment()) {
-                        self.sendStatusMessage(`Status: ${progress.status}${progress.status === "recognizing text" ? ` - ${(parseFloat(progress.progress)*100).toFixed(2)}%`: "" }`);
-                    }
-                }
-            });
-            await worker.load();
-            self.sendStatusMessage(`Loading English language pack...`);
-            await worker.loadLanguage("eng");
-            self.sendStatusMessage("Intialising Tesseract API...");
-            await worker.initialize("eng");
-            self.sendStatusMessage("Finding text...");
-            const result = await worker.recognize(image);
-
-            if (showConfidence) {
-                return `Confidence: ${result.data.confidence}%\n\n${result.data.text}`;
-            } else {
-                return result.data.text;
-            }
-        } catch (err) {
-            throw new OperationError(`Error performing OCR on image. (${err})`);
-        }
+        // TODO: Utools Cannot upload large Plugin, so sorry to kill OCR module.
+        throw new OperationError("Oops! OCR cannot be used in Utools");
     }
 }
 
